@@ -7,7 +7,15 @@ import { ArrowUpRight, CheckCircle2 } from "lucide-react";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { SpotlightCard } from "@/components/ui/spotlight-card";
 import { Badge } from "@/components/ui/badge";
-import { programs } from "@/lib/data";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { programs, type Program } from "@/lib/data";
 
 type Props = { showHeading?: boolean; limit?: number };
 
@@ -78,13 +86,7 @@ export function ProgramsGrid({ showHeading = true, limit }: Props) {
                     ))}
                   </ul>
                   <div className="mt-auto pt-2">
-                    <Link
-                      href={`/programs#${p.slug}`}
-                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition-colors hover:text-primary/80"
-                    >
-                      Explore program
-                      <ArrowUpRight className="size-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-                    </Link>
+                    <ProgramDetailsDialog program={p} />
                   </div>
                 </div>
               </SpotlightCard>
@@ -93,5 +95,84 @@ export function ProgramsGrid({ showHeading = true, limit }: Props) {
         </div>
       </div>
     </section>
+  );
+}
+
+function ProgramDetailsDialog({ program: p }: { program: Program }) {
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <button
+          type="button"
+          className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition-colors hover:text-primary/80 focus-visible:outline-none focus-visible:underline"
+        >
+          Explore program
+          <ArrowUpRight className="size-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+        </button>
+      </DialogTrigger>
+      <DialogContent className="max-w-2xl gap-0 overflow-hidden p-0 max-h-[90vh] overflow-y-auto">
+        <div className="relative aspect-[16/9] w-full overflow-hidden">
+          <Image
+            src={p.image}
+            alt=""
+            fill
+            sizes="(max-width: 768px) 100vw, 640px"
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+          <div className="absolute left-5 top-5 flex items-center gap-2">
+            <Badge variant="secondary" className="border-white/15 bg-black/40 text-white backdrop-blur">
+              {p.level}
+            </Badge>
+            <Badge variant="outline" className="border-white/15 bg-black/40 text-white backdrop-blur">
+              {p.duration}
+            </Badge>
+          </div>
+          <div className="absolute bottom-5 left-5 flex items-center gap-3">
+            <div className="grid size-12 place-items-center rounded-xl bg-primary text-primary-foreground shadow-lg shadow-primary/40">
+              <p.icon className="size-6" />
+            </div>
+            <div>
+              <DialogTitle className="font-display text-2xl font-semibold tracking-tight text-white">
+                {p.title}
+              </DialogTitle>
+              <p className="mt-0.5 text-sm text-primary/90">{p.tagline}</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="space-y-6 p-6">
+          <DialogDescription className="text-sm leading-relaxed text-muted-foreground">
+            {p.description}
+          </DialogDescription>
+
+          <div>
+            <h4 className="font-display text-xs font-semibold uppercase tracking-[0.18em] text-foreground/80">
+              What&apos;s included
+            </h4>
+            <ul className="mt-4 grid gap-2.5 sm:grid-cols-2">
+              {p.highlights.map((h) => (
+                <li key={h} className="flex items-start gap-2 text-sm text-foreground/85">
+                  <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-primary" />
+                  <span>{h}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="flex flex-col gap-3 border-t border-white/10 pt-5 sm:flex-row sm:items-center sm:justify-between">
+            <div className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+              {p.duration} · {p.level}
+            </div>
+            <Button asChild size="lg">
+              <Link href={`/contact?intent=program&program=${p.slug}`}>
+                Get this program
+                <ArrowUpRight className="size-4" />
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 }
