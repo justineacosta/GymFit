@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Instagram, Youtube, Twitter, Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin } from "lucide-react";
+import { Instagram, Youtube, Twitter } from "@/components/ui/brand-icons";
 import { Logo } from "./logo";
 import { NewsletterForm } from "@/components/sections/newsletter-form";
 import { siteConfig } from "@/lib/site";

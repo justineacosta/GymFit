@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Instagram } from "lucide-react";
+import { Instagram } from "@/components/ui/brand-icons";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Badge } from "@/components/ui/badge";
 import { trainers } from "@/lib/data";

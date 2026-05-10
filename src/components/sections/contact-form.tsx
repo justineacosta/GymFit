@@ -23,9 +23,9 @@ const goalOptions = [
 
 const schema = z.object({
   name: z.string().min(2, "Tell us your name"),
-  email: z.string().email("Enter a valid email address"),
+  email: z.email("Enter a valid email address"),
   phone: z.string().optional(),
-  goal: z.enum(goalOptions, { required_error: "Pick a goal" }),
+  goal: z.enum(goalOptions, { error: "Pick a goal" }),
   message: z.string().min(10, "A few more details would help — at least 10 characters"),
 });
 
